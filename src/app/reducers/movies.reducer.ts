@@ -1,10 +1,10 @@
 import {createSelector} from '@ngrx/store';
 import {MoviesActionTypes, MoviesActions} from '../actions/movies.actions';
-import {IMovies} from '../app.models';
+import {IMovie} from '../app.models';
 
 
 export interface MoviesState {
-  movies: IMovies[];
+  movies: IMovie[];
 }
 
 export const initialState: MoviesState = {

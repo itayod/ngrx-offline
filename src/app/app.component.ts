@@ -2,10 +2,12 @@ import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {fromEvent, merge, Observable} from 'rxjs';
 import {mapTo} from 'rxjs/operators';
+import {LoadFavorites, AddToFavorites} from './actions/favorites.actions';
 import {LoadMovies} from './actions/movies.actions';
 import {OnlineChanged} from './actions/root.actions';
-import {IMovies} from './app.models';
-import {selectMovies} from './reducers/movies.reducer';
+import {IMovie} from './app.models';
+import {selectFavorites} from './reducers/favoites.reducer';
+import {selectMovies, movies} from './reducers/movies.reducer';
 import {selectIsOnline} from './reducers/root.reducer';
 
 @Component({
@@ -17,7 +19,8 @@ export class AppComponent {
 
   title = 'ngrx-offline';
   public isOnline$: Observable<boolean>;
-  private movies$: Observable<IMovies[]>;
+  private movies$: Observable<IMovie[]>;
+  private favorites$: Observable<IMovie[]>;
 
   constructor(private store: Store<any>) {
     merge(
@@ -31,5 +34,14 @@ export class AppComponent {
 
     this.store.dispatch(new LoadMovies());
     this.movies$ = this.store.select(selectMovies);
+
+    this.movies$.subscribe((movieList: IMovie[]) => {
+      // @ts-ignore
+      this.store.dispatch(new LoadFavorites(movieList));
+
+      this.store.dispatch(new AddToFavorites(movieList[0]))
+    })
+
+    this.favorites$ = this.store.select(selectFavorites);
   }
 }
