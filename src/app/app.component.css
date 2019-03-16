@@ -1,0 +1,3 @@
+.is-offline {
+  filter: grayscale(80%);
+}
