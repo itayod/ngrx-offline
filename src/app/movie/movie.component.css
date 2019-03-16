@@ -1,0 +1,9 @@
+.example-card {
+    max-width: 185px;
+  }
+  
+    img[mat-card-image] {
+        width: 185px;
+        height: 278px;
+        margin:0;
+    }

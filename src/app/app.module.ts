@@ -9,14 +9,19 @@ import {environment} from '../environments/environment';
 import {AppComponent} from './app.component';
 import {MoviesEffects} from './movies.effects';
 import {reducers, metaReducers} from './reducers';
-
+import { MovieComponent } from './movie/movie.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule,
+    MatCardModule,
     HttpClientModule,
+    MatIconModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([MoviesEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
