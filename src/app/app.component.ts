@@ -1,3 +1,4 @@
+import {HttpClient} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {fromEvent, merge, Observable} from 'rxjs';
@@ -22,7 +23,7 @@ export class AppComponent {
   private movies$: Observable<IMovie[]>;
   private favorites$: Observable<IMovie[]>;
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<any>, http: HttpClient) {
     merge(
       fromEvent(window, 'online').pipe(mapTo(true)),
       fromEvent(window, 'offline').pipe(mapTo(false)),
@@ -35,11 +36,12 @@ export class AppComponent {
     this.store.dispatch(new LoadMovies());
     this.movies$ = this.store.select(selectMovies);
 
+
     this.movies$.subscribe((movieList: IMovie[]) => {
       // @ts-ignore
       this.store.dispatch(new LoadFavorites(movieList));
 
-      this.store.dispatch(new AddToFavorites(movieList[0]))
+      // this.store.dispatch(new AddToFavorites(movieList[0]))
     })
 
     this.favorites$ = this.store.select(selectFavorites);
