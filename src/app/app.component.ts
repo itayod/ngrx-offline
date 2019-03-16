@@ -1,3 +1,4 @@
+import {HttpClient} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {fromEvent, merge, Observable} from 'rxjs';
@@ -19,7 +20,7 @@ export class AppComponent {
   public isOnline$: Observable<boolean>;
   private movies$: Observable<IMovies[]>;
 
-  constructor(private store: Store<any>) {
+  constructor(private store: Store<any>, http: HttpClient) {
     merge(
       fromEvent(window, 'online').pipe(mapTo(true)),
       fromEvent(window, 'offline').pipe(mapTo(false)),
@@ -31,5 +32,9 @@ export class AppComponent {
 
     this.store.dispatch(new LoadMovies());
     this.movies$ = this.store.select(selectMovies);
+
+    http.get('/api/movies').subscribe(console.log);
+    const movie = {title: 'aaa'};
+    http.post('/api/movies/add', movie).subscribe(console.log);
   }
 }
