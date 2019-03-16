@@ -7,5 +7,6 @@
 </div>
 
 <div *ngFor="let movie of movies$ | async">
-  {{movie | json}}
+  <!-- {{movie | json}} -->
+  <app-movie [movie]="movie"></app-movie>
 </div>
