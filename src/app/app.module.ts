@@ -1,11 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
-import { AppComponent } from './app.component';
-import { StoreModule } from '@ngrx/store';
-import {EffectService} from './effect.service';
-import { reducers, metaReducers } from './reducers';
+import {AppComponent} from './app.component';
+import {MoviesEffects} from './movies.effects';
+import {reducers, metaReducers} from './reducers';
 
 @NgModule({
   declarations: [
@@ -13,10 +16,12 @@ import { reducers, metaReducers } from './reducers';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([EffectService])
+    EffectsModule.forRoot([MoviesEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [],
+  providers: [MoviesEffects],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
