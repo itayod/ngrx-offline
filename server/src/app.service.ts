@@ -14,7 +14,7 @@ export class AppService {
   }
 
   addMovie(movie: IMovie) {
-    const id = Math.max(...this.movies.map(m => m.id));
+    const id = Math.max(...this.movies.map(m => m.id)) + 1;
     this.movies.push({id, ...movie});
 
     return id;
