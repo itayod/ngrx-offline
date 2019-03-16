@@ -3,10 +3,10 @@ import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {fromEvent, merge, Observable} from 'rxjs';
 import {mapTo} from 'rxjs/operators';
-import {LoadMovies} from './actions/movies.actions';
+import {LoadMovies, AddToFavorites, RemoveFromFavorites} from './actions/movies.actions';
 import {OnlineChanged} from './actions/root.actions';
-import {IMovies} from './app.models';
-import {selectMovies} from './reducers/movies.reducer';
+import {IMovie} from './app.models';
+import {selectMovies, movies} from './reducers/movies.reducer';
 import {selectIsOnline} from './reducers/root.reducer';
 
 @Component({
@@ -18,7 +18,8 @@ export class AppComponent {
 
   title = 'ngrx-offline';
   public isOnline$: Observable<boolean>;
-  private movies$: Observable<IMovies[]>;
+  private movies$: Observable<IMovie[]>;
+  private favorites$: Observable<IMovie[]>;
 
   constructor(private store: Store<any>, http: HttpClient) {
     merge(
@@ -33,8 +34,13 @@ export class AppComponent {
     this.store.dispatch(new LoadMovies());
     this.movies$ = this.store.select(selectMovies);
 
-    http.get('/api/movies').subscribe(console.log);
-    const movie = {title: 'aaa'};
-    http.post('/api/movies/add', movie).subscribe(console.log);
+
+  }
+  addToFavorites(id) {
+    this.store.dispatch(new AddToFavorites(id));
+  }
+
+  removeFromFavorites(id) {
+    this.store.dispatch(new RemoveFromFavorites(id));
   }
 }
