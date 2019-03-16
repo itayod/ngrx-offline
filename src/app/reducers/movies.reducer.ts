@@ -5,10 +5,12 @@ import {IMovie} from '../app.models';
 
 export interface MoviesState {
   movies: IMovie[];
+  favorites: IMovie['id'][];
 }
 
 export const initialState: MoviesState = {
-  movies: []
+  movies: [],
+  favorites: []
 };
 
 
@@ -19,6 +21,10 @@ export function reducer(state = initialState, action: MoviesActions): MoviesStat
   switch (action.type) {
     case MoviesActionTypes.LoadMoviesSuccess:
       return {...state, movies: action.payload.data};
+    case MoviesActionTypes.AddToFavorites:
+      return {...state, favorites: state.favorites.concat(action.payload)}
+    case MoviesActionTypes.RemoveFromFavorites:
+      return {...state, favorites: state.favorites.filter((movieId) => action.payload !== movieId)}
     default:
       return state;
   }

@@ -3,11 +3,9 @@ import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {fromEvent, merge, Observable} from 'rxjs';
 import {mapTo} from 'rxjs/operators';
-import {LoadFavorites, AddToFavorites} from './actions/favorites.actions';
-import {LoadMovies} from './actions/movies.actions';
+import {LoadMovies, AddToFavorites, RemoveFromFavorites} from './actions/movies.actions';
 import {OnlineChanged} from './actions/root.actions';
 import {IMovie} from './app.models';
-import {selectFavorites} from './reducers/favoites.reducer';
 import {selectMovies, movies} from './reducers/movies.reducer';
 import {selectIsOnline} from './reducers/root.reducer';
 
@@ -37,13 +35,12 @@ export class AppComponent {
     this.movies$ = this.store.select(selectMovies);
 
 
-    this.movies$.subscribe((movieList: IMovie[]) => {
-      // @ts-ignore
-      this.store.dispatch(new LoadFavorites(movieList));
+  }
+  addToFavorites(id) {
+    this.store.dispatch(new AddToFavorites(id));
+  }
 
-      // this.store.dispatch(new AddToFavorites(movieList[0]))
-    })
-
-    this.favorites$ = this.store.select(selectFavorites);
+  removeFromFavorites(id) {
+    this.store.dispatch(new RemoveFromFavorites(id));
   }
 }
